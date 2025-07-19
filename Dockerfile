@@ -19,7 +19,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy application code
 COPY main.py .
-COPY model_trainer.py .
 COPY test.py .
 
 # Copy model and data folders
@@ -33,5 +32,5 @@ RUN mkdir -p /app/output
 ENV PYTHONUNBUFFERED=1
 ENV TRANSFORMERS_CACHE=/app/model_cache
 
-# Run the test script by default
-CMD ["python", "test.py"]
+# Run the main script by default
+CMD ["python", "main.py", "--input", "/app/input", "--output", "/app/output"]

@@ -1,36 +1,86 @@
+#!/usr/bin/env python3
+"""
+Test script to validate PDF outline extraction results
+"""
+
 import os
-from main import PDFOutlineExtractor  # Assuming your main code is saved as extractor.py
 import json
+import sys
+from jsonschema import validate
 
-def test_batch_pdf_outline(input_folder="input", output_folder="output"):
-    # Create output directory if it doesn't exist
-    os.makedirs(output_folder, exist_ok=True)
-
-    # Load extractor
-    extractor = PDFOutlineExtractor()
-
-    # Process all PDFs in input folder
-    pdf_files = [f for f in os.listdir(input_folder) if f.lower().endswith('.pdf')]
-
-    for pdf_file in pdf_files:
-        pdf_path = os.path.join(input_folder, pdf_file)
-        json_filename = os.path.splitext(pdf_file)[0] + ".json"
-        output_path = os.path.join(output_folder, json_filename)
-
-        print(f"Processing: {pdf_file}")
-
+def validate_output_format(output_dir):
+    """Validate that all JSON files in the output directory have the correct format."""
+    
+    # Define the expected JSON schema
+    schema = {
+        "type": "object",
+        "required": ["title", "outline"],
+        "properties": {
+            "title": {"type": "string"},
+            "outline": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["level", "text", "page"],
+                    "properties": {
+                        "level": {"type": "string", "enum": ["H1", "H2", "H3", "H4"]},
+                        "text": {"type": "string"},
+                        "page": {"type": "integer"}
+                    }
+                }
+            }
+        }
+    }
+    
+    # Get all JSON files in the output directory
+    json_files = [f for f in os.listdir(output_dir) if f.endswith('.json') and f != '_processing_summary.json']
+    
+    if not json_files:
+        print("❌ No JSON files found in the output directory.")
+        return False
+    
+    all_valid = True
+    
+    for json_file in json_files:
+        file_path = os.path.join(output_dir, json_file)
+        
         try:
-            result = extractor.extract_outline(pdf_path)
-
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=2, ensure_ascii=False)
-
-            print(f"✅ Saved to {output_path}")
-
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                
+            # Validate against schema
+            validate(instance=data, schema=schema)
+            
+            # Additional checks
+            if not data["title"] and not data["outline"]:
+                print(f"⚠️ {json_file}: Empty title and outline.")
+            else:
+                print(f"✅ {json_file}: Valid format.")
+                
+        except json.JSONDecodeError:
+            print(f"❌ {json_file}: Invalid JSON format.")
+            all_valid = False
         except Exception as e:
-            print(f"❌ Error processing {pdf_file}: {e}")
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump({"title": "", "outline": []}, f, indent=2)
+            print(f"❌ {json_file}: {str(e)}")
+            all_valid = False
+    
+    return all_valid
+
+def main():
+    """Main function."""
+    output_dir = "output"
+    
+    if len(sys.argv) > 1:
+        output_dir = sys.argv[1]
+    
+    print(f"Validating JSON files in '{output_dir}'...")
+    
+    if validate_output_format(output_dir):
+        print("✅ All files passed validation.")
+        return 0
+    else:
+        print("❌ Some files failed validation.")
+        return 1
 
 if __name__ == "__main__":
-    test_batch_pdf_outline()
+    sys.exit(main())
