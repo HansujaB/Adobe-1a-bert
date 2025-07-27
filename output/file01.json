@@ -1,0 +1,22 @@
+{
+  "title": "Application form for grant of LTC advance",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "(a) If the concession is to visit anywhere in",
+      "page": 1,
+      "confidence": 0.8
+    },
+    {
+      "level": "H2",
+      "text": "(b) Block for which to be availed.",
+      "page": 1,
+      "confidence": 0.8
+    }
+  ],
+  "metadata": {
+    "filename": "file01.pdf",
+    "processing_timestamp": "2025-07-19T22:11:43.711061",
+    "outline_count": 2
+  }
+}

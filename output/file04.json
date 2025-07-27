@@ -1,0 +1,28 @@
+{
+  "title": "Parsippany -Troy Hills STEM Pathways",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "Mission Statement: To provide PTHSD high school students with the opportunity to",
+      "page": 1,
+      "confidence": 0.8
+    },
+    {
+      "level": "H1",
+      "text": "Goals:",
+      "page": 1,
+      "confidence": 0.8
+    },
+    {
+      "level": "H1",
+      "text": "PATHWAY OPTIONS",
+      "page": 1,
+      "confidence": 0.8
+    }
+  ],
+  "metadata": {
+    "filename": "file04.pdf",
+    "processing_timestamp": "2025-07-19T22:11:50.241225",
+    "outline_count": 3
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "total_files": 5,
+  "successful": 5,
+  "failed": 0,
+  "results": [
+    {
+      "file": "file01.pdf",
+      "status": "success",
+      "title_found": true,
+      "outline_count": 2
+    },
+    {
+      "file": "file02.pdf",
+      "status": "success",
+      "title_found": true,
+      "outline_count": 20
+    },
+    {
+      "file": "file03.pdf",
+      "status": "success",
+      "title_found": true,
+      "outline_count": 33
+    },
+    {
+      "file": "file04.pdf",
+      "status": "success",
+      "title_found": true,
+      "outline_count": 3
+    },
+    {
+      "file": "file05.pdf",
+      "status": "success",
+      "title_found": true,
+      "outline_count": 0
+    }
+  ],
+  "timestamp": "2025-07-19T22:11:50.388441"
+}
